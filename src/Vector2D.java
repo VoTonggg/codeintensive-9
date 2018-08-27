@@ -1,0 +1,77 @@
+public class Vector2D {
+    float x;
+    float y;
+
+    public Vector2D(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
+    public Vector2D() {
+        this(0,0);
+    }
+
+    void addUp(float x, float y) {
+        this.x += x;
+        this.y += y;
+    }
+    Vector2D add(float x, float y) {
+        return  new Vector2D(this.x + x, this.y + y);
+    }
+
+    void print() {
+        System.out.println("x = " + this.x + ", y = " + this.y);
+    }
+
+    void addUp(Vector2D v) {
+        this.addUp(v.x,v.y );
+    }
+
+    Vector2D add(Vector2D v) {
+        return this.add(this.x + v.x, this.y + v.y);
+    }
+
+
+    // subtraction
+    void subtractBy(float x, float y) {
+        this.x -= x;
+        this.y -= y;
+    }
+
+    Vector2D substract(float x, float y) {
+        return new Vector2D(this.x - x, this.y - y );
+    }
+
+    void subtractBy(Vector2D v) {
+        this.subtractBy(v.x, v.y );
+    }
+
+    Vector2D subtract(Vector2D v) {
+        return new Vector2D(this.x - v.x, this.y - v.y);
+    }
+
+    // scale vector
+
+    void scaleBy(float m) {
+        this.x *= m;
+        this.y *= m;
+    }
+
+    Vector2D scale(float m) {
+        return new Vector2D(this.x * m, this.y * m);
+    }
+
+    // length of a vector
+
+    float length() {
+        float length = (float) Math.sqrt(this.x * this.x + this.y * this.y );
+        return length;
+    }
+
+    //normalize a vector
+
+    Vector2D normalize() {
+        float length = this.length();
+        return new Vector2D(this.x / length, this.y / length);
+    }
+}
