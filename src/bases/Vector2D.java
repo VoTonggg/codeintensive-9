@@ -1,6 +1,8 @@
+package bases;
+
 public class Vector2D {
-    float x;
-    float y;
+    public float x;
+    public float y;
 
     public Vector2D(float x, float y) {
         this.x = x;
@@ -15,62 +17,62 @@ public class Vector2D {
         this.x += x;
         this.y += y;
     }
-    Vector2D add(float x, float y) {
+    public Vector2D add(float x, float y) {
         return  new Vector2D(this.x + x, this.y + y);
     }
 
-    void print() {
+    public void print() {
         System.out.println("x = " + this.x + ", y = " + this.y);
     }
 
-    void addUp(Vector2D v) {
+    public void addUp(Vector2D v) {
         this.addUp(v.x,v.y );
     }
 
-    Vector2D add(Vector2D v) {
+    public Vector2D add(Vector2D v) {
         return this.add(this.x + v.x, this.y + v.y);
     }
 
 
     // subtraction
-    void subtractBy(float x, float y) {
+    public void subtractBy(float x, float y) {
         this.x -= x;
         this.y -= y;
     }
 
-    Vector2D substract(float x, float y) {
+    public Vector2D substract(float x, float y) {
         return new Vector2D(this.x - x, this.y - y );
     }
 
-    void subtractBy(Vector2D v) {
+    public void subtractBy(Vector2D v) {
         this.subtractBy(v.x, v.y );
     }
 
-    Vector2D subtract(Vector2D v) {
+    public Vector2D subtract(Vector2D v) {
         return new Vector2D(this.x - v.x, this.y - v.y);
     }
 
     // scale vector
 
-    void scaleBy(float m) {
+    public void scaleBy(float m) {
         this.x *= m;
         this.y *= m;
     }
 
-    Vector2D scale(float m) {
+    public Vector2D scale(float m) {
         return new Vector2D(this.x * m, this.y * m);
     }
 
     // length of a vector
 
-    float length() {
+    public float length() {
         float length = (float) Math.sqrt(this.x * this.x + this.y * this.y );
         return length;
     }
 
     //normalize a vector
 
-    Vector2D normalize() {
+    public Vector2D normalize() {
         float length = this.length();
         return new Vector2D(this.x / length, this.y / length);
     }

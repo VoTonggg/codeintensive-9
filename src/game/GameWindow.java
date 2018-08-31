@@ -1,3 +1,7 @@
+package game;
+
+import inputs.InputManager;
+
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -17,12 +21,12 @@ public class GameWindow extends JFrame {
 
             @Override
             public void keyPressed(KeyEvent e) {
-                canvas.inputManager.keyPressed(e);
+                InputManager.instance.keyPressed(e);
             }
 
             @Override
             public void keyReleased(KeyEvent e) {
-                canvas.inputManager.keyReleased(e);
+                InputManager.instance.keyReleased(e);
             }
         });
 
@@ -38,7 +42,7 @@ public class GameWindow extends JFrame {
     }
 
 
-    void mainLoop() {
+    public void mainLoop() {
         long lastTimeRender = 0;
         long currentTime = 0;
         while(true) {

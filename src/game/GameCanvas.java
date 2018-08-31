@@ -1,10 +1,16 @@
-import javax.imageio.ImageIO;
+package game;
+
+import bases.FrameCounter;
+import bases.ImageUtil;
+import enemies.Enemy;
+import enemies.EnemyBullet;
+import inputs.InputManager;
+import players.Player;
+import players.PlayerBullet;
+
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -13,6 +19,7 @@ public class GameCanvas extends JPanel {
 
     ArrayList<PlayerBullet> bullets;
     ArrayList<Enemy> enemies;
+    ArrayList<EnemyBullet> enemyBullets;
     Player player;
 
     InputManager inputManager;
@@ -20,17 +27,23 @@ public class GameCanvas extends JPanel {
     BufferedImage backBuffer; // null
     Graphics backBufferGraphics;
     Random random;
+    FrameCounter frameCounter;
 
     public GameCanvas() {
         random = new Random();
-        inputManager = new InputManager();
+
+//        inputManager = new inputs.InputManager();
+        inputManager = InputManager.instance;
+
+        frameCounter = new FrameCounter(60);
+
         bullets = new ArrayList<>();
+        enemyBullets = new ArrayList<>();
         enemies = new ArrayList<>();
 
         background = ImageUtil.load("images/background/background.png");
         player = new Player(268,600 );
         player.bullets = this.bullets;
-        player.inputManager = this.inputManager; // reference, point to
 
         backBuffer = new BufferedImage(600,800 ,BufferedImage.TYPE_INT_ARGB );
         backBufferGraphics = backBuffer.getGraphics();
@@ -49,25 +62,17 @@ public class GameCanvas extends JPanel {
             b.run();
         }
 
-        enemySpawnCount++;
-        if (enemySpawnCount >= 60) {
+        frameCounter.run();
+        if (frameCounter.expired) {
             Enemy enemy = new Enemy(random.nextInt(600), 0);
             enemies.add(enemy);
-            enemySpawnCount = 0;
+            frameCounter.reset();
         }
 
         for(Enemy e: enemies) {
             e.run();
-
         }
     }
-
-    int enemySpawnCount = 0;
-
-
-    boolean shootLock = false;
-    int count = 0 ;
-
 
     void render() {
         backBufferGraphics.drawImage(background, 0,0 ,null );
@@ -81,6 +86,7 @@ public class GameCanvas extends JPanel {
         for(Enemy e: enemies) {
             e.render(backBufferGraphics);
         }
+
         this.repaint();
     }
 }
