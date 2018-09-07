@@ -3,28 +3,28 @@ package players;
 import java.awt.*;
 import java.util.ArrayList;
 
+import bases.GameObject;
 import bases.ImageRenderer;
-import bases.Vector2D;
 
-public class Player {
-    Vector2D position;
-    ImageRenderer imageRenderer;
+public class Player extends GameObject {
     PlayerMove playerMove;
     PlayerShoot playerShoot;
 
-    public ArrayList<PlayerBullet> bullets;
-
     public Player(int x, int y) {
+        super(x,y);
+        this.imageRenderer = new ImageRenderer("images/player/MB-69/player1.png");
         this.playerMove = new PlayerMove();
         this.playerShoot = new PlayerShoot();
-        this.position = new Vector2D(x, y);
-        this.imageRenderer = new ImageRenderer("images/player/MB-69/player1.png");
-    }
-    public void render(Graphics g) {
-        this.imageRenderer.render(g,this.position );
     }
 
+    @Override
+    public void render(Graphics g) {
+        super.render(g);
+    }
+
+    @Override
     public void run() {
+        super.run();
         this.move();
         this.shoot();
     }

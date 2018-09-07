@@ -1,25 +1,25 @@
 package enemies;
 
+import bases.GameObject;
 import bases.ImageRenderer;
-import bases.ImageUtil;
-import bases.Vector2D;
 
 import java.awt.*;
 
-public class EnemyBullet {
-    Vector2D position;
-    Image image;
+public class EnemyBullet extends GameObject {
 
     public EnemyBullet(int x,int y) {
-        this.position = new Vector2D(x,y);
-        this.image = ImageUtil.load("images/bullet/enemy/enemy2_bullet1.png");
+        super(x,y);
+        this.imageRenderer = new ImageRenderer("images/bullet/enemy/enemy2_bullet1.png");
     }
 
+    @Override
     public void render(Graphics g) {
-        g.drawImage(this.image,(int)this.position.x ,(int)this.position.y , null);
+        super.render(g);
     }
 
+    @Override
     public void run() {
+        super.run();
         this.position.y += 10;
     }
 }

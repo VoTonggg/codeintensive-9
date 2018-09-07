@@ -1,42 +1,34 @@
 package enemies;
 
-import bases.FrameCounter;
-import bases.ImageUtil;
-import bases.Vector2D;
+import bases.*;
 
 import java.awt.*;
-import java.util.ArrayList;
 
-public class Enemy {
-    Vector2D position;
-    Image image;
+public class Enemy extends GameObject {
     FrameCounter frameCounter = new FrameCounter(20);
-    public ArrayList<EnemyBullet> enemyBullets = new ArrayList<>();
     EnemyBullet newBullet;
+
     public Enemy(int x, int y) {
-        this.position = new Vector2D(x,y);
-        this.image = ImageUtil.load("images/enemy/bacteria/bacteria1.png");
+        super(x,y);
+        this.imageRenderer = new ImageRenderer("images/enemy/bacteria/bacteria1.png");
         newBullet = new EnemyBullet(x,y);
-        enemyBullets.add(newBullet);
+        GameObject.add(newBullet);
     }
+
+    @Override
     public void render(Graphics g) {
-        g.drawImage(this.image,(int)this.position.x , (int)this.position.y ,null );
-        for (EnemyBullet eB: enemyBullets) {
-            eB.render(g);
-        }
+        super.render(g);
     }
 
+    @Override
     public void run() {
+        super.run();
         this.position.y += 3;
-
-        for (EnemyBullet eB: enemyBullets) {
-            eB.run();
-        }
 
         frameCounter.run();
         if (frameCounter.expired) {
             EnemyBullet enemyBullet = new EnemyBullet((int)this.position.x, (int)this.position.y);
-            enemyBullets.add(enemyBullet);
+            GameObject.add(enemyBullet);
             frameCounter.reset();
         }
     }

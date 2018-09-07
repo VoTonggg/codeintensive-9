@@ -13,7 +13,7 @@ public class Vector2D {
         this(0,0);
     }
 
-    void addUp(float x, float y) {
+    public void addUp(float x, float y) {
         this.x += x;
         this.y += y;
     }

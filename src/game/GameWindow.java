@@ -30,6 +30,12 @@ public class GameWindow extends JFrame {
             }
         });
 
+        this.addMouseMotionListener(new MouseMotionAdapter() {
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                InputManager.instance.mouseMoved(e);
+            }
+        });
         this.setSize(600, 800);
         this.setResizable(false);
         this.setTitle("Micro-war");

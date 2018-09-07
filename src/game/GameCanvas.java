@@ -1,49 +1,41 @@
 package game;
 
 import bases.FrameCounter;
+import bases.GameObject;
 import bases.ImageUtil;
+import bloodcells.BloodCellSpawn;
 import enemies.Enemy;
-import enemies.EnemyBullet;
+import enemies.EnemySpawn;
 import inputs.InputManager;
 import players.Player;
-import players.PlayerBullet;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
 import java.util.Random;
+
+
 
 public class GameCanvas extends JPanel {
     Image background;
-
-    ArrayList<PlayerBullet> bullets;
-    ArrayList<Enemy> enemies;
-    ArrayList<EnemyBullet> enemyBullets;
     Player player;
 
     InputManager inputManager;
-
     BufferedImage backBuffer; // null
     Graphics backBufferGraphics;
+    BloodCellSpawn bloodCellSpawn;
+
     Random random;
-    FrameCounter frameCounter;
+    EnemySpawn enemySpawn;
 
     public GameCanvas() {
         random = new Random();
-
-//        inputManager = new inputs.InputManager();
         inputManager = InputManager.instance;
-
-        frameCounter = new FrameCounter(60);
-
-        bullets = new ArrayList<>();
-        enemyBullets = new ArrayList<>();
-        enemies = new ArrayList<>();
+        enemySpawn = new EnemySpawn();
+        bloodCellSpawn = new BloodCellSpawn();
 
         background = ImageUtil.load("images/background/background.png");
-        player = new Player(268,600 );
-        player.bullets = this.bullets;
+        player = new Player(300,700 );
+        GameObject.add(player);
 
         backBuffer = new BufferedImage(600,800 ,BufferedImage.TYPE_INT_ARGB );
         backBufferGraphics = backBuffer.getGraphics();
@@ -57,36 +49,14 @@ public class GameCanvas extends JPanel {
 
 
     void run() {
-        player.run();
-        for(PlayerBullet b: bullets) {
-            b.run();
-        }
-
-        frameCounter.run();
-        if (frameCounter.expired) {
-            Enemy enemy = new Enemy(random.nextInt(600), 0);
-            enemies.add(enemy);
-            frameCounter.reset();
-        }
-
-        for(Enemy e: enemies) {
-            e.run();
-        }
+        GameObject.runAll();
+        enemySpawn.run();
+        bloodCellSpawn.run();
     }
 
     void render() {
         backBufferGraphics.drawImage(background, 0,0 ,null );
-//        backBufferGraphics.drawImage(player.image, player.x, player.y, null);
-        player.render(backBufferGraphics);
-
-        for(PlayerBullet b: bullets) {
-            b.render(backBufferGraphics);
-        }
-
-        for(Enemy e: enemies) {
-            e.render(backBufferGraphics);
-        }
-
+        GameObject.renderAll(backBufferGraphics);
         this.repaint();
     }
 }
