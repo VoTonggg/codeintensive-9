@@ -5,13 +5,15 @@ import bases.*;
 import java.awt.*;
 
 public class Enemy extends GameObject {
-    FrameCounter frameCounter = new FrameCounter(20);
     EnemyBullet newBullet;
+    EnemyShoot enemyShoot;
 
     public Enemy(int x, int y) {
         super(x,y);
         this.imageRenderer = new ImageRenderer("images/enemy/bacteria/bacteria1.png");
+        this.boxCollider = new BoxCollider(x, y, 30, 30);
         newBullet = new EnemyBullet(x,y);
+        enemyShoot = new EnemyShoot();
         GameObject.add(newBullet);
     }
 
@@ -24,12 +26,15 @@ public class Enemy extends GameObject {
     public void run() {
         super.run();
         this.position.y += 3;
+        this.shoot();
 
-        frameCounter.run();
-        if (frameCounter.expired) {
-            EnemyBullet enemyBullet = new EnemyBullet((int)this.position.x, (int)this.position.y);
-            GameObject.add(enemyBullet);
-            frameCounter.reset();
-        }
     }
+    void shoot() {
+        this.enemyShoot.run(this);
+    }
+
+    public void getHit() {
+        this.destroy();
+    }
+
 }

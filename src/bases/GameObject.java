@@ -1,11 +1,15 @@
 package bases;
 
+import enemies.Enemy;
+import enemies.EnemyBullet;
+
 import java.awt.*;
 import java.util.ArrayList;
 
 public class GameObject {
     public Vector2D position;
     public ImageRenderer imageRenderer;
+    public boolean isActive;
 
     private static ArrayList<GameObject> gameObjects = new ArrayList<>();
     private static ArrayList<GameObject> newGameObjects = new ArrayList<>();
@@ -16,7 +20,9 @@ public class GameObject {
 
     public static void runAll() {
         for(GameObject go: gameObjects) {
-            go.run();
+            if(go.isActive) {
+                go.run();
+            }
         }
         gameObjects.addAll(newGameObjects);
         newGameObjects.clear();
@@ -24,22 +30,65 @@ public class GameObject {
 
     public static void renderAll(Graphics g) {
         for(GameObject go: gameObjects) {
-            go.render(g);
+            if (go.isActive) {
+                go.render(g);
+            }
         }
     }
 
     public GameObject(int x, int y) {
         this.position = new Vector2D(x, y);
         this.imageRenderer = null;
+        this.boxCollider = null;
+        this.isActive = true;
     }
 
     public void run() {
-
+        if(this.boxCollider != null) {
+            this.boxCollider.position.x = this.position.x;
+            this.boxCollider.position.y = this.position.y;
+            this.boxCollider.run();
+        }
     }
+
+    public static Enemy checkCollision(BoxCollider boxCollider) {
+        for (GameObject go: gameObjects) {
+            if (go.boxCollider != null && go.isActive) {
+                if (go instanceof Enemy) {
+                    if (go.boxCollider.collideWith(boxCollider)) {
+                        return (Enemy)go;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+    public static EnemyBullet shootPlayer(BoxCollider boxCollider) {
+        for (GameObject go: gameObjects) {
+            if (go.boxCollider != null && go.isActive) {
+                if (go instanceof EnemyBullet) {
+                    if (go.boxCollider.collideWith(boxCollider)) {
+                        return (EnemyBullet)go;
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    public BoxCollider boxCollider;
 
     public void render(Graphics g) {
         if (this.imageRenderer != null) {
             this.imageRenderer.render(g,this.position );
+
         }
+        if (this.boxCollider != null) {
+            this.boxCollider.render(g);
+        }
+    }
+
+    public void destroy() {
+        this.isActive = false;
     }
 }

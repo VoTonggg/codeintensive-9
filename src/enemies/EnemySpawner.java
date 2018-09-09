@@ -5,10 +5,10 @@ import bases.GameObject;
 
 import java.util.Random;
 
-public class EnemySpawn extends GameObject {
+public class EnemySpawner extends GameObject {
     Random random = new Random();
-    FrameCounter frameCounter = new FrameCounter(60);
-    public EnemySpawn() {
+    FrameCounter frameCounter = new FrameCounter(100);
+    public EnemySpawner() {
         super(0, 0);
     }
 
